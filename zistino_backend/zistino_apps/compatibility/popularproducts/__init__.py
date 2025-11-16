@@ -1,0 +1,2 @@
+# PopularProducts compatibility module
+

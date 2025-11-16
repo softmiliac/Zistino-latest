@@ -1,0 +1,3417 @@
+openapi: 3.0.3
+info:
+  title: Zistino Backend API
+  version: 1.0.0
+  description: API documentation for Zistino driver app and related services.
+paths:
+  /api/v1/auth/forgot-password/:
+    post:
+      operationId: api_v1_auth_forgot_password_create
+      description: Send password reset code
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: Reset code sent
+  /api/v1/auth/login/:
+    post:
+      operationId: api_v1_auth_login_create
+      description: Login with phone number and verification code
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: Login successful with token
+  /api/v1/auth/logout/:
+    post:
+      operationId: api_v1_auth_logout_create
+      description: Logout user
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: Logout successful
+  /api/v1/auth/register/:
+    post:
+      operationId: api_v1_auth_register_create
+      description: Register new user with verification code
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          description: Registration successful with token
+  /api/v1/auth/reset-password/:
+    post:
+      operationId: api_v1_auth_reset_password_create
+      description: Reset password with verification code
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: Password reset successful
+  /api/v1/auth/send-code/:
+    post:
+      operationId: api_v1_auth_send_code_create
+      description: Send verification code to phone number
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendCodeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SendCodeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendCodeRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: Verification code sent
+  /api/v1/auth/verification-codes/:
+    get:
+      operationId: api_v1_auth_verification_codes_list
+      description: ViewSet for managing verification codes
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedVerificationCodeList'
+          description: ''
+    post:
+      operationId: api_v1_auth_verification_codes_create
+      description: ViewSet for managing verification codes
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationCode'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerificationCode'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerificationCode'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationCode'
+          description: ''
+  /api/v1/auth/verification-codes/{id}/:
+    get:
+      operationId: api_v1_auth_verification_codes_retrieve
+      description: ViewSet for managing verification codes
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Verification Code.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationCode'
+          description: ''
+    put:
+      operationId: api_v1_auth_verification_codes_update
+      description: ViewSet for managing verification codes
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Verification Code.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificationCode'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerificationCode'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerificationCode'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationCode'
+          description: ''
+    patch:
+      operationId: api_v1_auth_verification_codes_partial_update
+      description: ViewSet for managing verification codes
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Verification Code.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVerificationCode'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVerificationCode'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVerificationCode'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationCode'
+          description: ''
+    delete:
+      operationId: api_v1_auth_verification_codes_destroy
+      description: ViewSet for managing verification codes
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Verification Code.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/verify-code/:
+    post:
+      operationId: api_v1_auth_verify_code_create
+      description: Verify phone number with code
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyCodeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyCodeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyCodeRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: Code verified
+  /api/v1/deliveries/:
+    get:
+      operationId: api_v1_deliveries_list
+      description: ViewSet for managing deliveries
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDeliveryList'
+          description: ''
+    post:
+      operationId: api_v1_deliveries_create
+      description: ViewSet for managing deliveries
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Delivery'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Delivery'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Delivery'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+          description: ''
+  /api/v1/deliveries/{id}/:
+    get:
+      operationId: api_v1_deliveries_retrieve
+      description: ViewSet for managing deliveries
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Delivery.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+          description: ''
+    put:
+      operationId: api_v1_deliveries_update
+      description: ViewSet for managing deliveries
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Delivery.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Delivery'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Delivery'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Delivery'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+          description: ''
+    patch:
+      operationId: api_v1_deliveries_partial_update
+      description: ViewSet for managing deliveries
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Delivery.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDelivery'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDelivery'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDelivery'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+          description: ''
+    delete:
+      operationId: api_v1_deliveries_destroy
+      description: ViewSet for managing deliveries
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Delivery.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/notifications/:
+    get:
+      operationId: api_v1_notifications_list
+      description: ViewSet for managing notifications
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationList'
+          description: ''
+    post:
+      operationId: api_v1_notifications_create
+      description: ViewSet for managing notifications
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/v1/notifications/{id}/:
+    get:
+      operationId: api_v1_notifications_retrieve
+      description: ViewSet for managing notifications
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Notification.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+    put:
+      operationId: api_v1_notifications_update
+      description: ViewSet for managing notifications
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Notification.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Notification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Notification'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+    patch:
+      operationId: api_v1_notifications_partial_update
+      description: ViewSet for managing notifications
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Notification.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNotification'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNotification'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNotification'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+    delete:
+      operationId: api_v1_notifications_destroy
+      description: ViewSet for managing notifications
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Notification.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/orders/:
+    get:
+      operationId: api_v1_orders_list
+      description: ViewSet for managing orders
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrderList'
+          description: ''
+    post:
+      operationId: api_v1_orders_create
+      description: ViewSet for managing orders
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/v1/orders/{id}/:
+    get:
+      operationId: api_v1_orders_retrieve
+      description: ViewSet for managing orders
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Order.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    put:
+      operationId: api_v1_orders_update
+      description: ViewSet for managing orders
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Order.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    patch:
+      operationId: api_v1_orders_partial_update
+      description: ViewSet for managing orders
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Order.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrder'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    delete:
+      operationId: api_v1_orders_destroy
+      description: ViewSet for managing orders
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Order.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/payments/transactions/:
+    get:
+      operationId: api_v1_payments_transactions_list
+      description: ViewSet for managing transactions
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTransactionList'
+          description: ''
+    post:
+      operationId: api_v1_payments_transactions_create
+      description: ViewSet for managing transactions
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+  /api/v1/payments/transactions/{id}/:
+    get:
+      operationId: api_v1_payments_transactions_retrieve
+      description: ViewSet for managing transactions
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Transaction.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+    put:
+      operationId: api_v1_payments_transactions_update
+      description: ViewSet for managing transactions
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Transaction.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+    patch:
+      operationId: api_v1_payments_transactions_partial_update
+      description: ViewSet for managing transactions
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Transaction.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTransaction'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTransaction'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTransaction'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+    delete:
+      operationId: api_v1_payments_transactions_destroy
+      description: ViewSet for managing transactions
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Transaction.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/payments/wallets/:
+    get:
+      operationId: api_v1_payments_wallets_list
+      description: ViewSet for managing wallets
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWalletList'
+          description: ''
+    post:
+      operationId: api_v1_payments_wallets_create
+      description: ViewSet for managing wallets
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+  /api/v1/payments/wallets/{id}/:
+    get:
+      operationId: api_v1_payments_wallets_retrieve
+      description: ViewSet for managing wallets
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Wallet.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+    put:
+      operationId: api_v1_payments_wallets_update
+      description: ViewSet for managing wallets
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Wallet.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+    patch:
+      operationId: api_v1_payments_wallets_partial_update
+      description: ViewSet for managing wallets
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Wallet.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWallet'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWallet'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWallet'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+    delete:
+      operationId: api_v1_payments_wallets_destroy
+      description: ViewSet for managing wallets
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Wallet.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/products/:
+    get:
+      operationId: api_v1_products_list
+      description: ViewSet for managing products
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductList'
+          description: ''
+    post:
+      operationId: api_v1_products_create
+      description: ViewSet for managing products
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/v1/products/{id}/:
+    get:
+      operationId: api_v1_products_retrieve
+      description: ViewSet for managing products
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Product.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    put:
+      operationId: api_v1_products_update
+      description: ViewSet for managing products
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Product.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    patch:
+      operationId: api_v1_products_partial_update
+      description: ViewSet for managing products
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Product.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    delete:
+      operationId: api_v1_products_destroy
+      description: ViewSet for managing products
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Product.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/products/categories/:
+    get:
+      operationId: api_v1_products_categories_list
+      description: ViewSet for managing categories
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCategoryList'
+          description: ''
+    post:
+      operationId: api_v1_products_categories_create
+      description: ViewSet for managing categories
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Category'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Category'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/v1/products/categories/{id}/:
+    get:
+      operationId: api_v1_products_categories_retrieve
+      description: ViewSet for managing categories
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Category.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    put:
+      operationId: api_v1_products_categories_update
+      description: ViewSet for managing categories
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Category.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Category'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Category'
+        required: true
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    patch:
+      operationId: api_v1_products_categories_partial_update
+      description: ViewSet for managing categories
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Category.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    delete:
+      operationId: api_v1_products_categories_destroy
+      description: ViewSet for managing categories
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Category.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/users/profile/:
+    get:
+      operationId: api_v1_users_profile_retrieve
+      description: Get current user profile
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: api_v1_users_profile_update
+      description: Get current user profile
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/users/profiles/:
+    get:
+      operationId: api_v1_users_profiles_list
+      description: ViewSet for managing user profiles
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+    post:
+      operationId: api_v1_users_profiles_create
+      description: ViewSet for managing user profiles
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v1/users/profiles/{id}/:
+    get:
+      operationId: api_v1_users_profiles_retrieve
+      description: ViewSet for managing user profiles
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this User.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: api_v1_users_profiles_update
+      description: ViewSet for managing user profiles
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this User.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: api_v1_users_profiles_partial_update
+      description: ViewSet for managing user profiles
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this User.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: api_v1_users_profiles_destroy
+      description: ViewSet for managing user profiles
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this User.
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/users/profiles/me/:
+    get:
+      operationId: api_v1_users_profiles_me_retrieve
+      description: Get or update current user profile
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: api_v1_users_profiles_me_update
+      description: Get or update current user profile
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/v1/users/upload-image/:
+    post:
+      operationId: api_v1_users_upload_image_create
+      description: Upload profile image
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+    Delivery:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        driver:
+          type: string
+          format: uuid
+          readOnly: true
+        driver_name:
+          type: string
+          readOnly: true
+        order:
+          type: string
+          format: uuid
+        order_id:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/DeliveryStatusEnum'
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        address:
+          type: string
+        phone_number:
+          type: string
+          maxLength: 15
+        delivery_date:
+          type: string
+          format: date-time
+          nullable: true
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - address
+      - created_at
+      - driver
+      - driver_name
+      - id
+      - order
+      - order_id
+      - phone_number
+      - updated_at
+    DeliveryStatusEnum:
+      enum:
+      - assigned
+      - in_progress
+      - completed
+      - cancelled
+      type: string
+      description: |-
+        * `assigned` - Assigned
+        * `in_progress` - In Progress
+        * `completed` - Completed
+        * `cancelled` - Cancelled
+    ForgotPasswordRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          maxLength: 15
+      required:
+      - phoneNumber
+    LoginRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          maxLength: 15
+        code:
+          type: string
+          maxLength: 6
+      required:
+      - code
+      - phoneNumber
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        notification_type:
+          $ref: '#/components/schemas/NotificationTypeEnum'
+        is_read:
+          type: boolean
+        data:
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - message
+      - notification_type
+      - title
+      - user
+    NotificationTypeEnum:
+      enum:
+      - order
+      - delivery
+      - payment
+      - system
+      type: string
+      description: |-
+        * `order` - Order
+        * `delivery` - Delivery
+        * `payment` - Payment
+        * `system` - System
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        totalPrice:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        status:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        userId:
+          type: string
+          maxLength: 255
+        address1:
+          type: string
+        address2:
+          type: string
+        phone1:
+          type: string
+          maxLength: 15
+        phone2:
+          type: string
+          maxLength: 15
+        createOrderDate:
+          type: string
+          format: date-time
+          readOnly: true
+        submitPriceDate:
+          type: string
+          format: date-time
+          nullable: true
+        sendToPostDate:
+          type: string
+          format: date-time
+          nullable: true
+        postStateNumber:
+          type: string
+          maxLength: 100
+        paymentTrackingCode:
+          type: string
+          maxLength: 100
+        userFullName:
+          type: string
+          maxLength: 255
+        userPhoneNumber:
+          type: string
+          maxLength: 15
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+      required:
+      - createOrderDate
+      - created_at
+      - id
+      - orderItems
+      - updated_at
+      - user
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        productName:
+          type: string
+          maxLength: 255
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        unitPrice:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        totalPrice:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - productName
+      - totalPrice
+    PaginatedCategoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+    PaginatedDeliveryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Delivery'
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    PaginatedOrderList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+    PaginatedProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    PaginatedTransactionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PaginatedVerificationCodeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerificationCode'
+    PaginatedWalletList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Wallet'
+    PatchedCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedDelivery:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        driver:
+          type: string
+          format: uuid
+          readOnly: true
+        driver_name:
+          type: string
+          readOnly: true
+        order:
+          type: string
+          format: uuid
+        order_id:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/DeliveryStatusEnum'
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+          nullable: true
+        address:
+          type: string
+        phone_number:
+          type: string
+          maxLength: 15
+        delivery_date:
+          type: string
+          format: date-time
+          nullable: true
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedNotification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        message:
+          type: string
+        notification_type:
+          $ref: '#/components/schemas/NotificationTypeEnum'
+        is_read:
+          type: boolean
+        data:
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedOrder:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        totalPrice:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        status:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        userId:
+          type: string
+          maxLength: 255
+        address1:
+          type: string
+        address2:
+          type: string
+        phone1:
+          type: string
+          maxLength: 15
+        phone2:
+          type: string
+          maxLength: 15
+        createOrderDate:
+          type: string
+          format: date-time
+          readOnly: true
+        submitPriceDate:
+          type: string
+          format: date-time
+          nullable: true
+        sendToPostDate:
+          type: string
+          format: date-time
+          nullable: true
+        postStateNumber:
+          type: string
+          maxLength: 100
+        paymentTrackingCode:
+          type: string
+          maxLength: 100
+        userFullName:
+          type: string
+          maxLength: 255
+        userPhoneNumber:
+          type: string
+          maxLength: 15
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+    PatchedProduct:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        category:
+          type: string
+          format: uuid
+        category_name:
+          type: string
+          readOnly: true
+        price_per_unit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        unit:
+          type: string
+          maxLength: 50
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        wallet:
+          type: string
+          format: uuid
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        transaction_type:
+          $ref: '#/components/schemas/TransactionTypeEnum'
+        status:
+          $ref: '#/components/schemas/TransactionStatusEnum'
+        description:
+          type: string
+        reference_id:
+          type: string
+          maxLength: 100
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        wallet_balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        phoneNumber:
+          type: string
+          readOnly: true
+        isActive:
+          type: boolean
+          readOnly: true
+        emailConfirmed:
+          type: boolean
+          readOnly: true
+        imageUrl:
+          type: string
+          format: uri
+          nullable: true
+        companyName:
+          type: string
+          maxLength: 255
+        vatNumber:
+          type: string
+          maxLength: 50
+        representative:
+          type: string
+          maxLength: 255
+        sheba:
+          type: string
+          maxLength: 50
+        bankname:
+          type: string
+          maxLength: 255
+        birthdate:
+          type: string
+          format: date
+          nullable: true
+        codeMeli:
+          type: string
+          maxLength: 20
+        representativeBy:
+          type: string
+          maxLength: 255
+        language:
+          type: string
+          maxLength: 10
+        country:
+          type: string
+          maxLength: 100
+        city:
+          type: string
+          maxLength: 100
+        is_driver:
+          type: boolean
+        driver_license_number:
+          type: string
+          maxLength: 50
+        vehicle_type:
+          type: string
+          maxLength: 100
+        vehicle_plate:
+          type: string
+          maxLength: 20
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedVerificationCode:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        phone_number:
+          type: string
+          maxLength: 15
+        code:
+          type: string
+          maxLength: 6
+        is_used:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        expires_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedWallet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        user_name:
+          type: string
+          readOnly: true
+        balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        category:
+          type: string
+          format: uuid
+        category_name:
+          type: string
+          readOnly: true
+        price_per_unit:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        unit:
+          type: string
+          maxLength: 50
+        image:
+          type: string
+          format: uri
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - category
+      - category_name
+      - created_at
+      - id
+      - name
+      - price_per_unit
+    RegisterRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          maxLength: 15
+        code:
+          type: string
+          maxLength: 6
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+      required:
+      - code
+      - phoneNumber
+    ResetPasswordRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          maxLength: 15
+        code:
+          type: string
+          maxLength: 6
+        newPassword:
+          type: string
+          minLength: 6
+      required:
+      - code
+      - newPassword
+      - phoneNumber
+    SendCodeRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          maxLength: 15
+      required:
+      - phoneNumber
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        wallet:
+          type: string
+          format: uuid
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        transaction_type:
+          $ref: '#/components/schemas/TransactionTypeEnum'
+        status:
+          $ref: '#/components/schemas/TransactionStatusEnum'
+        description:
+          type: string
+        reference_id:
+          type: string
+          maxLength: 100
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        wallet_balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          readOnly: true
+      required:
+      - amount
+      - created_at
+      - id
+      - transaction_type
+      - wallet
+      - wallet_balance
+    TransactionStatusEnum:
+      enum:
+      - pending
+      - completed
+      - failed
+      - cancelled
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `completed` - Completed
+        * `failed` - Failed
+        * `cancelled` - Cancelled
+    TransactionTypeEnum:
+      enum:
+      - credit
+      - debit
+      type: string
+      description: |-
+        * `credit` - Credit
+        * `debit` - Debit
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        phoneNumber:
+          type: string
+          readOnly: true
+        isActive:
+          type: boolean
+          readOnly: true
+        emailConfirmed:
+          type: boolean
+          readOnly: true
+        imageUrl:
+          type: string
+          format: uri
+          nullable: true
+        companyName:
+          type: string
+          maxLength: 255
+        vatNumber:
+          type: string
+          maxLength: 50
+        representative:
+          type: string
+          maxLength: 255
+        sheba:
+          type: string
+          maxLength: 50
+        bankname:
+          type: string
+          maxLength: 255
+        birthdate:
+          type: string
+          format: date
+          nullable: true
+        codeMeli:
+          type: string
+          maxLength: 20
+        representativeBy:
+          type: string
+          maxLength: 255
+        language:
+          type: string
+          maxLength: 10
+        country:
+          type: string
+          maxLength: 100
+        city:
+          type: string
+          maxLength: 100
+        is_driver:
+          type: boolean
+        driver_license_number:
+          type: string
+          maxLength: 50
+        vehicle_type:
+          type: string
+          maxLength: 100
+        vehicle_plate:
+          type: string
+          maxLength: 20
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - emailConfirmed
+      - id
+      - isActive
+      - phoneNumber
+      - updated_at
+      - username
+    VerificationCode:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        phone_number:
+          type: string
+          maxLength: 15
+        code:
+          type: string
+          maxLength: 6
+        is_used:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        expires_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - code
+      - created_at
+      - expires_at
+      - id
+      - phone_number
+    VerifyCodeRequest:
+      type: object
+      properties:
+        phoneNumber:
+          type: string
+          maxLength: 15
+        code:
+          type: string
+          maxLength: 6
+      required:
+      - code
+      - phoneNumber
+    Wallet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        user_name:
+          type: string
+          readOnly: true
+        balance:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - updated_at
+      - user
+      - user_name
+    Address:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+        phone_number:
+          type: string
+          maxLength: 20
+        address:
+          type: string
+        description:
+          type: string
+        plate:
+          type: string
+          maxLength: 50
+        unit:
+          type: string
+          maxLength: 50
+        city:
+          type: string
+          maxLength: 100
+        province:
+          type: string
+          maxLength: 100
+        country:
+          type: string
+          maxLength: 100
+        zip_code:
+          type: string
+          maxLength: 20
+        company_name:
+          type: string
+          nullable: true
+        company_number:
+          type: string
+          nullable: true
+        vat_number:
+          type: string
+          nullable: true
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$ 
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$ 
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - user
+      - address
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        model_make:
+          type: string
+        plate_num:
+          type: string
+        licence:
+          type: string
+        bodytype:
+          type: string
+        color:
+          type: string
+        manufacturer:
+          type: string
+        registration_num:
+          type: string
+        engine_size:
+          type: string
+        tank:
+          type: string
+        numoftyres:
+          type: string
+        gps_device_id:
+          type: string
+        active:
+          type: boolean
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$ 
+          nullable: true
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$ 
+          nullable: true
+        protocol:
+          type: string
+        port:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - user
+    Color:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        code:
+          type: string
+        locale:
+          type: string
+      required:
+      - id
+      - name
+    Price:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        price:
+          type: integer
+        locale:
+          type: string
+      required:
+      - id
+      - product
+      - price
+    Specification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        size:
+          type: string
+        level:
+          type: string
+      required:
+      - id
+      - product
+    Warranty:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        name:
+          type: string
+        image_url:
+          type: string
+          format: uri
+          nullable: true
+        description:
+          type: string
+        locale:
+          type: string
+      required:
+      - id
+      - product
+      - name
+    Basket:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        is_empty:
+          type: boolean
+        total_items:
+          type: integer
+        total_unique_items:
+          type: integer
+        cart_total:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BasketItem'
+          readOnly: true
+      required:
+      - id
+      - user
+    BasketItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        basket:
+          type: integer
+          readOnly: true
+        product_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        master_image:
+          type: string
+          format: uri
+          nullable: true
+        discount_percent:
+          type: integer
+        quantity:
+          type: integer
+        price:
+          type: integer
+        item_total:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - product_id
+      - name
+      - quantity
+    Coupon:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        key:
+          type: string
+        amount:
+          type: integer
+        status:
+          type: integer
+        valid_from:
+          type: string
+          format: date-time
+          nullable: true
+        valid_to:
+          type: string
+          format: date-time
+          nullable: true
+        usage_limit:
+          type: integer
+          nullable: true
+        used_count:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - key
+      - amount
+    Trip:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        start_location_id:
+          type: integer
+        end_location_id:
+          type: integer
+        distance:
+          type: integer
+        duration:
+          type: integer
+        max_speed:
+          type: integer
+        average_speed:
+          type: integer
+        average_altitude:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - user
+    LocationUpdate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        trip:
+          type: integer
+        latitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+        longitude:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,6})?$
+        speed:
+          type: integer
+        heading:
+          type: string
+        altitude:
+          type: string
+          format: decimal
+        satellites:
+          type: integer
+        hdop:
+          type: integer
+        gsm_signal:
+          type: integer
+        odometer:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - user
+      - trip
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          format: uuid
+          readOnly: true
+        product:
+          type: string
+          format: uuid
+        parent:
+          type: integer
+          nullable: true
+        rate:
+          type: integer
+        text:
+          type: string
+        is_accepted:
+          type: boolean
+        user_full_name:
+          type: string
+        user_image_url:
+          type: string
+          format: uri
+          nullable: true
+        product_image:
+          type: string
+          format: uri
+          nullable: true
+        created_on:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - user
+      - product
+      - text
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

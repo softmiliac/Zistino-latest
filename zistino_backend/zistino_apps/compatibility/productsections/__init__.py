@@ -1,0 +1,2 @@
+# ProductSections compatibility layer
+

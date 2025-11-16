@@ -1,0 +1,2 @@
+# Colors compatibility module
+

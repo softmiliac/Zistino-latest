@@ -1,0 +1,2 @@
+# Warranties compatibility layer
+

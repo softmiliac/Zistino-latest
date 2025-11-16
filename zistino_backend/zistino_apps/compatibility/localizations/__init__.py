@@ -1,0 +1,2 @@
+# Localizations compatibility module
+

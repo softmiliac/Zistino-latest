@@ -1,0 +1,2 @@
+# ProductSpecifications compatibility layer
+

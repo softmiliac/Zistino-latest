@@ -1,0 +1,221 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    ZISTINO BACKEND - ENTITY RELATIONSHIP DIAGRAM              ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              AUTHENTICATION DOMAIN                          │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+         ┌──────────────┐
+         │     USER     │ ◄─── Core entity (extends AbstractUser)
+         │  (UUID PK)   │
+         └──────┬───────┘
+               │
+    ┌──────────┼──────────┬──────────────┬──────────────┬─────────────┐
+    │          │          │              │              │             │
+    │          ▼          ▼              ▼              ▼             ▼
+    │    ┌─────────┐ ┌─────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐
+    │    │ Address │ │ Vehicle │  │  Wallet  │  │VerifCode │  │  Order   │
+    │    │ (1:N)   │ │  (1:N)  │  │  (1:1)  │  │  (1:N)  │  │  (1:N)   │
+    │    └─────────┘ └─────────┘  └──────────┘  └──────────┘  └─────┬────┘
+    │                                                                    │
+    └───────────────────────────────────────────────────────────────────┘
+         │                                                      │
+         ▼                                                      ▼
+    ┌──────────┐                                          ┌──────────┐
+    │  Basket  │                                          │OrderItem │
+    │  (1:N)   │                                          │  (1:N)   │
+    └──────────┘                                          └──────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              PRODUCTS DOMAIN                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+    ┌──────────────┐
+    │   Category   │
+    │  (UUID PK)   │
+    └──────┬───────┘
+           │
+           │ (1:N)
+           ▼
+    ┌──────────────┐
+    │   Product    │
+    │  (UUID PK)   │
+    └──────┬───────┘
+           │
+    ┌──────┼──────┬──────────────┬──────────────┬──────────────┐
+    │      │      │              │              │              │
+    │      ▼      ▼              ▼              ▼              ▼
+    │ ┌────────┐ ┌────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
+    │ │Product │ │ Price  │ │   Spec   │ │ Warranty │ │ Comment  │
+    │ │ Color  │ │ (1:N)  │ │  (1:1)   │ │  (1:N)   │ │  (1:N)   │
+    │ │ (N:M)  │ └────────┘ └──────────┘ └──────────┘ └──────────┘
+    │ └────┬───┘
+    │      │
+    │      ▼
+    │ ┌────────┐
+    │ │ Color  │
+    │ └────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            DELIVERIES DOMAIN                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+    ┌──────────────┐         ┌──────────────┐
+    │     USER     │         │    Order     │
+    │  (Driver)    │         │              │
+    └──────┬───────┘         └──────┬───────┘
+           │                        │
+           │                        │
+           ▼                        │
+    ┌──────────────┐                │
+    │   Delivery   │◄───────────────┘
+    │              │   (1 Order can have many Deliveries)
+    └──────┬───────┘
+           │
+           │
+           ▼
+    ┌──────────────┐
+    │     Trip     │
+    │              │
+    └──────┬───────┘
+           │
+           │ (1:N)
+           ▼
+    ┌──────────────┐
+    │LocationUpdate│
+    └──────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            PAYMENTS DOMAIN                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+    ┌──────────────┐
+    │     USER     │
+    └──────┬───────┘
+           │
+           │ (1:1)
+           ▼
+    ┌──────────────┐
+    │    Wallet    │
+    └──────┬───────┘
+           │
+           │ (1:N)
+           ▼
+    ┌──────────────┐
+    │ Transaction  │
+    └──────────────┘
+
+    ┌──────────────┐
+    │    Coupon    │ (Standalone - no FK to User)
+    │  (Key UK)    │
+    └──────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        NOTIFICATIONS & COMMENTS                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+    ┌──────────────┐
+    │     USER     │
+    └──────┬───────┘
+           │
+    ┌──────┼──────┐
+    │      │      │
+    ▼      ▼      ▼
+┌─────────┐ ┌──────────┐ ┌──────────┐
+│Notify   │ │ Comment  │ │ Comment  │
+│(1:N)    │ │ (1:N)    │ │ (Self)   │
+└─────────┘ └─────┬────┘ └─────┬────┘
+                  │            │
+                  │            │ (parent)
+                  ▼            │
+           ┌──────────┐       │
+           │ Product  │       │
+           └──────────┘       │
+                              │
+                              └──► Threading (replies)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                            KEY RELATIONSHIPS SUMMARY
+═══════════════════════════════════════════════════════════════════════════════
+
+ONE-TO-MANY (1:N)
+─────────────────
+  User ──► Address           (User has many addresses)
+  User ──► Vehicle            (User has many vehicles)
+  User ──► Order              (User places many orders)
+  User ──► Basket             (User has many baskets)
+  User ──► Delivery           (Driver handles many deliveries)
+  User ──► Trip               (User takes many trips)
+  User ──► LocationUpdate     (User tracks many locations)
+  User ──► Notification       (User receives many notifications)
+  User ──► Comment            (User writes many comments)
+  Category ──► Product        (Category contains many products)
+  Product ──► Price           (Product has many prices)
+  Product ──► Warranty        (Product has many warranties)
+  Product ──► Comment          (Product has many reviews)
+  Order ──► OrderItem         (Order contains many items)
+  Order ──► Delivery           (Order can have many deliveries)
+  Basket ──► BasketItem       (Basket contains many items)
+  Wallet ──► Transaction      (Wallet records many transactions)
+  Trip ──► LocationUpdate     (Trip tracks many locations)
+  Comment ──► Comment         (Comment can have many replies - self-ref)
+
+ONE-TO-ONE (1:1)
+────────────────
+  User ──► Wallet             (User has exactly one wallet)
+  Product ──► Specification  (Product has exactly one specification)
+
+MANY-TO-MANY (N:M)
+──────────────────
+  Product ↔ Color             (Products can have multiple colors)
+           via ProductColor    (Colors can belong to multiple products)
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                            FLUTTER MODEL MAPPING
+═══════════════════════════════════════════════════════════════════════════════
+
+Flutter Model                          →  Django Model                →  Endpoint
+─────────────────────────────────────────────────────────────────────────────────
+sec/auth_model.dart                    →  User, VerificationCode     →  /api/v1/auth/
+sec/user_model.dart                    →  User                       →  /api/v1/users/profiles/
+sec/address_model.dart                 →  Address                    →  /api/v1/users/addresses/
+base/vehicle_rqm.dart                  →  Vehicle                    →  /api/v1/users/vehicles/
+pro/product_model.dart                 →  Product                    →  /api/v1/products/products/
+pro/category_model.dart                →  Category                  →  /api/v1/products/categories/
+pro/colors_model.dart                  →  Color                      →  /api/v1/products/colors/
+pro/price_model.dart                   →  Price                      →  /api/v1/products/prices/
+pro/specification_model.dart           →  Specification              →  /api/v1/products/specifications/
+pro/warranties_model.dart              →  Warranty                  →  /api/v1/products/warranties/
+sec/order_model.dart                   →  Order                      →  /api/v1/orders/orders/
+sec/order_item_model.dart              →  OrderItem                 →  (nested)
+inv/basket_model.dart                  →  Basket                     →  /api/v1/orders/baskets/
+inv/basket_item_model.dart             →  BasketItem                 →  /api/v1/orders/basket-items/
+sec/wallet_model.dart                  →  Wallet                     →  /api/v1/payments/wallets/
+sec/transaction_wallet_rqm.dart       →  Transaction                →  /api/v1/payments/transactions/
+sec/coupons_model.dart                 →  Coupon                    →  /api/v1/payments/coupons/
+base/driver_delivery_model.dart        →  Delivery                   →  /api/v1/deliveries/deliveries/
+base/trip_rqm.dart                     →  Trip                       →  /api/v1/deliveries/trips/
+base/location_rqm.dart                 →  LocationUpdate             →  /api/v1/deliveries/locations/
+sec/comment_model.dart                 →  Comment                    →  /api/v1/notifications/comments/
+sec/comments_items_model.dart          →  Comment (with children)    →  /api/v1/notifications/comments/
+
+
+═══════════════════════════════════════════════════════════════════════════════
+                                  NOTES
+═══════════════════════════════════════════════════════════════════════════════
+
+• UUIDs: Most entities use UUID for scalability and global uniqueness
+• AutoField: Address, Color, Price, Specification, Warranty, Basket, Trip,
+             LocationUpdate, Coupon use Integer AutoField
+• Timestamps: All models have created_at, most have updated_at
+• Cascade Deletes: All FK relationships use CASCADE on delete
+• Geo-location: Address, Vehicle, Delivery, LocationUpdate support lat/lng
+• Self-referencing: Comment model supports threaded replies via parent FK
+

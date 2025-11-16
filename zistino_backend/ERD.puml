@@ -1,0 +1,341 @@
+@startuml Zistino Backend ERD
+!define PK_COLOR #FFE6E6
+!define FK_COLOR #E6F3FF
+!define TABLE_COLOR #F0F0F0
+
+skinparam linetype ortho
+
+entity "User" as User PK_COLOR {
+  * id : UUID <<PK>>
+  --
+  * phone_number : String <<UK>>
+  username : String
+  email : String
+  is_active : Boolean
+  is_active_driver : Boolean
+  is_driver : Boolean
+  first_name : String
+  last_name : String
+  image_url : Image
+  company_name : String
+  vat_number : String
+  bank_name : String
+  birth_date : Date
+  national_id : String
+  language : String
+  country : String
+  city : String
+  created_at : DateTime
+  updated_at : DateTime
+}
+
+entity "VerificationCode" as VerificationCode PK_COLOR {
+  * id : Integer <<PK>>
+  --
+  phone_number : String
+  code : String
+  is_used : Boolean
+  created_at : DateTime
+  expires_at : DateTime
+}
+
+entity "Address" as Address PK_COLOR {
+  * id : Integer <<PK>>
+  * user_id : UUID <<FK>>
+  --
+  full_name : String
+  email : Email
+  phone_number : String
+  address : Text
+  city : String
+  province : String
+  country : String
+  zip_code : String
+  latitude : Decimal
+  longitude : Decimal
+  company_name : String
+  created_at : DateTime
+}
+
+entity "Vehicle" as Vehicle PK_COLOR {
+  * id : UUID <<PK>>
+  * user_id : UUID <<FK>>
+  --
+  model_make : String
+  plate_num : String
+  licence : String
+  bodytype : String
+  color : String
+  manufacturer : String
+  registration_num : String
+  engine_size : String
+  gps_device_id : String
+  active : Boolean
+  latitude : Decimal
+  longitude : Decimal
+  created_at : DateTime
+  updated_at : DateTime
+}
+
+entity "Category" as Category PK_COLOR {
+  * id : UUID <<PK>>
+  --
+  name : String
+  description : Text
+  image : Image
+  is_active : Boolean
+  created_at : DateTime
+}
+
+entity "Product" as Product PK_COLOR {
+  * id : UUID <<PK>>
+  * category_id : UUID <<FK>>
+  --
+  name : String
+  description : Text
+  price_per_unit : Decimal
+  unit : String
+  image : Image
+  is_active : Boolean
+  created_at : DateTime
+}
+
+entity "Color" as Color PK_COLOR {
+  * id : Integer <<PK>>
+  --
+  name : String
+  code : String
+  locale : String
+}
+
+entity "ProductColor" as ProductColor PK_COLOR {
+  * product_id : UUID <<FK>>
+  * color_id : Integer <<FK>>
+}
+
+entity "Price" as Price PK_COLOR {
+  * id : Integer <<PK>>
+  * product_id : UUID <<FK>>
+  --
+  price : Integer
+  locale : String
+}
+
+entity "Specification" as Specification PK_COLOR {
+  * id : Integer <<PK>>
+  * product_id : UUID <<FK>>
+  --
+  size : String
+  level : String
+}
+
+entity "Warranty" as Warranty PK_COLOR {
+  * id : Integer <<PK>>
+  * product_id : UUID <<FK>>
+  --
+  name : String
+  image_url : URL
+  description : Text
+  locale : String
+}
+
+entity "Order" as Order PK_COLOR {
+  * id : UUID <<PK>>
+  * user_id : UUID <<FK>>
+  --
+  total_price : Integer
+  status : Integer
+  external_user_id : String
+  address1 : Text
+  address2 : Text
+  phone1 : String
+  phone2 : String
+  create_order_date : DateTime
+  submit_price_date : DateTime
+  send_to_post_date : DateTime
+  post_state_number : String
+  payment_tracking_code : String
+  user_full_name : String
+  user_phone_number : String
+  created_at : DateTime
+  updated_at : DateTime
+}
+
+entity "OrderItem" as OrderItem PK_COLOR {
+  * id : UUID <<PK>>
+  * order_id : UUID <<FK>>
+  --
+  product_name : String
+  quantity : Integer
+  unit_price : Integer
+  total_price : Integer
+  created_at : DateTime
+}
+
+entity "Basket" as Basket PK_COLOR {
+  * id : Integer <<PK>>
+  * user_id : UUID <<FK>>
+  --
+  is_empty : Boolean
+  total_items : Integer
+  total_unique_items : Integer
+  cart_total : Integer
+  created_at : DateTime
+  updated_at : DateTime
+}
+
+entity "BasketItem" as BasketItem PK_COLOR {
+  * id : UUID <<PK>>
+  * basket_id : Integer <<FK>>
+  --
+  product_id : String
+  name : String
+  description : Text
+  master_image : URL
+  discount_percent : Integer
+  quantity : Integer
+  price : Integer
+  item_total : Integer
+  created_at : DateTime
+}
+
+entity "Wallet" as Wallet PK_COLOR {
+  * id : UUID <<PK>>
+  * user_id : UUID <<FK>>
+  --
+  balance : Decimal
+  created_at : DateTime
+  updated_at : DateTime
+}
+
+entity "Transaction" as Transaction PK_COLOR {
+  * id : UUID <<PK>>
+  * wallet_id : UUID <<FK>>
+  --
+  amount : Decimal
+  transaction_type : String
+  status : String
+  description : Text
+  reference_id : String
+  created_at : DateTime
+}
+
+entity "Coupon" as Coupon PK_COLOR {
+  * id : Integer <<PK>>
+  --
+  * key : String <<UK>>
+  amount : Integer
+  status : Integer
+  valid_from : DateTime
+  valid_to : DateTime
+  usage_limit : Integer
+  used_count : Integer
+  created_at : DateTime
+}
+
+entity "Delivery" as Delivery PK_COLOR {
+  * id : UUID <<PK>>
+  * driver_id : UUID <<FK>>
+  * order_id : UUID <<FK>>
+  --
+  status : String
+  latitude : Decimal
+  longitude : Decimal
+  address : Text
+  phone_number : String
+  delivery_date : DateTime
+  description : Text
+  created_at : DateTime
+  updated_at : DateTime
+}
+
+entity "Trip" as Trip PK_COLOR {
+  * id : Integer <<PK>>
+  * user_id : UUID <<FK>>
+  --
+  start_location_id : Integer
+  end_location_id : Integer
+  distance : Integer
+  duration : Integer
+  max_speed : Integer
+  average_speed : Integer
+  average_altitude : Integer
+  created_at : DateTime
+}
+
+entity "LocationUpdate" as LocationUpdate PK_COLOR {
+  * id : Integer <<PK>>
+  * user_id : UUID <<FK>>
+  * trip_id : Integer <<FK>>
+  --
+  latitude : Decimal
+  longitude : Decimal
+  speed : Integer
+  heading : String
+  altitude : Decimal
+  satellites : Integer
+  hdop : Integer
+  gsm_signal : Integer
+  odometer : Integer
+  created_at : DateTime
+}
+
+entity "Notification" as Notification PK_COLOR {
+  * id : UUID <<PK>>
+  * user_id : UUID <<FK>>
+  --
+  title : String
+  message : Text
+  notification_type : String
+  is_read : Boolean
+  data : JSON
+  created_at : DateTime
+}
+
+entity "Comment" as Comment PK_COLOR {
+  * id : Integer <<PK>>
+  * user_id : UUID <<FK>>
+  * product_id : UUID <<FK>>
+  * parent_id : Integer <<FK>>
+  --
+  rate : Integer
+  text : Text
+  is_accepted : Boolean
+  user_full_name : String
+  user_image_url : URL
+  product_image : URL
+  created_on : DateTime
+}
+
+' Relationships
+User ||--o{ Address : "has many"
+User ||--o{ Vehicle : "has many"
+User ||--o| Wallet : "has one"
+User ||--o{ Order : "places"
+User ||--o{ Basket : "has"
+User ||--o{ Delivery : "drives"
+User ||--o{ Trip : "takes"
+User ||--o{ LocationUpdate : "tracks"
+User ||--o{ Notification : "receives"
+User ||--o{ Comment : "writes"
+
+Category ||--o{ Product : "contains"
+Product ||--o{ ProductColor : "has"
+Color ||--o{ ProductColor : "referenced"
+Product ||--o{ Price : "has"
+Product ||--|| Specification : "has"
+Product ||--o{ Warranty : "has"
+Product ||--o{ Comment : "reviewed"
+
+Order ||--o{ OrderItem : "contains"
+Order ||--o{ Delivery : "delivered via"
+Basket ||--o{ BasketItem : "contains"
+
+Wallet ||--o{ Transaction : "records"
+
+Trip ||--o{ LocationUpdate : "tracks"
+
+Comment ||--o{ Comment : "replies"
+
+@enduml
+
