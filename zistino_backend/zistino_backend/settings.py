@@ -46,7 +46,7 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',  # For Token authentication
     'corsheaders',
     'django_filters',
-    'drf_spectacular',
+    'drf_ular',
 ]
 
 LOCAL_APPS = [
@@ -187,7 +187,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_ular.openapi.AutoSchema',
     # Custom exception handler for standardized error responses
     'EXCEPTION_HANDLER': 'zistino_apps.compatibility.exceptions.compatibility_exception_handler',
 }
@@ -203,6 +203,7 @@ SPECTACULAR_SETTINGS = {
     'SCHEMES': ['http'],
     # Configure servers - only local server
     'SERVERS': [
+        {"url": "https://zistino-latest.onrender.com", "description": "Render production"},
         {'url': 'http://127.0.0.1:8000', 'description': 'Local development server'},
     ],
 }
