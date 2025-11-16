@@ -46,7 +46,7 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',  # For Token authentication
     'corsheaders',
     'django_filters',
-    'drf_ular',
+    'drf_spectacular',
 ]
 
 LOCAL_APPS = [
@@ -187,7 +187,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_ular.openapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     # Custom exception handler for standardized error responses
     'EXCEPTION_HANDLER': 'zistino_apps.compatibility.exceptions.compatibility_exception_handler',
 }
