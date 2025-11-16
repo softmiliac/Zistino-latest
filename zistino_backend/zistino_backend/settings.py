@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-this-in-produc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=['*'], cast=lambda v: [s.strip() for s in v.split(',')])
 
 
 # Application definition
@@ -225,6 +225,9 @@ if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
     CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOWED_ORIGINS = [ 
+       "https://zistino-latest.onrender.com",  
+   ]
 
 CORS_ALLOW_CREDENTIALS = True
 
