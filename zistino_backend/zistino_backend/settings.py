@@ -46,7 +46,7 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',  # For Token authentication
     'corsheaders',
     'django_filters',
-    'drf_',
+    'drf_spectacular',
 ]
 
 LOCAL_APPS = [
