@@ -46,7 +46,7 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',  # For Token authentication
     'corsheaders',
     'django_filters',
-    'drf_spectacular',
+    'drf_',
 ]
 
 LOCAL_APPS = [
@@ -174,7 +174,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'zistino_apps.compatibility.authentication.JWTAuthentication',  # JWT authentication for compatibility
-        #'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -187,12 +187,12 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_.openapi.AutoSchema',
     # Custom exception handler for standardized error responses
     'EXCEPTION_HANDLER': 'zistino_apps.compatibility.exceptions.compatibility_exception_handler',
 }
 
-# drf-spectacular settings
+# drf- settings
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Zistino Backend API',
     'DESCRIPTION': 'API documentation for Zistino driver app and related services.',
