@@ -199,14 +199,39 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
-    # Configure schemes - use http for local development
-    'SCHEMES': ['http'],
-    # Configure servers - only local server
+
+    # پروتکل‌ها
+    'SCHEMES': ['http', 'https'],
+
+    # سرورها
     'SERVERS': [
         {"url": "https://zistino-latest.onrender.com", "description": "Render production"},
-        {'url': 'http://127.0.0.1:8000', 'description': 'Local development server'},
+        {"url": "http://127.0.0.1:8000", "description": "Local development server"},
+    ],
+
+    # 🔹 تعریف نوع‌های احراز هویت که در Swagger دیده می‌شوند
+    'SECURITY_SCHEMES': {
+        # همون سشن جنگو
+        'cookieAuth': {
+            'type': 'apiKey',
+            'in': 'cookie',
+            'name': 'sessionid',
+        },
+        # JWT ما
+        'tokenAuth': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization',
+            'description': 'JWT token. Example: Bearer {your_token}',
+        },
+    },
+
+    # 🔹 پیش‌فرض همه‌ی endpointها tokenAuth لازم دارند
+    'SECURITY': [
+        {'tokenAuth': []},
     ],
 }
+
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
